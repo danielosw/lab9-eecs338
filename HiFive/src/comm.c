@@ -74,7 +74,8 @@ void auto_brake(int devid)
         
         else{
 
-            while(realnum>=60){
+            while(realnum<=60){
+                gpio_write(GREEN_LED,OFF);
                 gpio_write(RED_LED,ON);
                 delay(100);
                 gpio_write(RED_LED,OFF);
@@ -143,7 +144,7 @@ int main()
     while (1) {
 
         auto_brake(lidar_to_hifive); // measuring distance using lidar and braking
-        int angle = read_from_pi(pi_to_hifive); //getting turn direction from pi
+    int angle = read_from_pi(pi_to_hifive); //getting turn direction from pi
         printf("\nangle=%d", angle) 
         int gpio = PIN_19; 
         for (int i = 0; i < 10; i++){

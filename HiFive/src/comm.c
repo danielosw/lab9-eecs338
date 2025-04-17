@@ -95,8 +95,8 @@ int read_from_pi(int devid)
         int ready = ser_isready(1);
         if(ready){
         char str[100];
-        ser_readline(1,100,str);
-        ser_printline(0,str);
+        ser_readline(devid,100,str);
+        return str;
         }
         }
         return 0;

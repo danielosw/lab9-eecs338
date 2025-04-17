@@ -93,6 +93,9 @@ while(1):
 		if count%4 == 0:
 			pass
 			#Your code here.
+			ser = serial.Serial("ttyAMA1", 115200)
+			deg = bytes(deg)
+			ser.write(deg)
 
 		
         

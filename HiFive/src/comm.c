@@ -38,11 +38,20 @@ void auto_brake(int devid)
         data[1] = temp;
         int realnum;
         if(data[1]<100){
-        realnum = data[0]*100+data[1];
+            realnum = data[0]*100+data[1];
         }
         else{
-            realnum =data[0]*1000+data[1];
+            realnum = data[0]*1000+data[1];
         }
+        if(check == checksome){
+            printf("checksum correct %d\n",checksome);
+            }
+            else{
+            printf("checksome failed. Calculated: %d real: %d\n", check,
+            checksome);
+            return;
+            }
+        // we should now have the real number transmitted by th device
         if(realnum>200){
 // turn off red if its on
             gpio_write(RED_LED,OFF);

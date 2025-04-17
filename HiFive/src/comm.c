@@ -3,10 +3,12 @@
 #include <string.h>
 
 #include "eecs388_lib.h"
-
+#define SERVO_PULSE_MAX 2400    /* 2400 us */
+#define SERVO_PULSE_MIN 544     /* 544 us */
+#define SERVO_PERIOD    20000   /* 20000 us (20ms) */
 void auto_brake(int devid)
 {
-
+    int gpio = PIN_19; 
     //get lidar data
     if ('Y' == ser_read(devid) && 'Y' == ser_read(devid)) {
         // get the data
@@ -41,8 +43,38 @@ void auto_brake(int devid)
         else{
             realnum =data[0]*1000+data[1];
         }
+        if(realnum>200){
+// turn off red if its on
+            gpio_write(RED_LED,OFF);
+            gpio_write(GREEN_LED,ON);
+        }
+        else if (realnum>100)
+        {
 
+            gpio_write(RED_LED,ON);
+            gpio_write(GREEN_LED,ON);
+        }
+        else if (realnum>60)
+        {
+        
+            //turn off green
+            gpio_write(GREEN_LED,OFF);
+            gpio_write(RED_LED,ON);
+            /* code */
+        }
+        
+        else{
+
+            while(realnum>=60){
+                gpio_write(RED_LED,ON);
+                delay(100);
+                gpio_write(RED_LED,OFF);
+                delay(100);
+            }
+        }
+        
     }
+
     // Task-1: 
     // Your code here (Use Lab 02 - Lab 04 for reference)
     // Use the directions given in the project document
@@ -50,6 +82,15 @@ void auto_brake(int devid)
 
 int read_from_pi(int devid)
 {
+    while (1) {
+        int ready = ser_isready(1);
+        if(ready){
+        char str[100];
+        ser_readline(1,100,str);
+        ser_printline(0,str);
+        }
+        }
+        return 0;
     // Task-2: 
     // You code goes here (Use Lab 09 for reference)
     // After performing Task-2 at dnn.py code, modify this part to read angle values from Raspberry Pi.
@@ -57,7 +98,13 @@ int read_from_pi(int devid)
 }
 
 void steering(int gpio, int pos)
-{
+{   
+    int t = pos*((2400-544)/180) + 544;
+    gpio_write(gpio,ON);
+
+    delay_usec(t);
+    gpio_write(gpio,OFF);
+    delay_usec(20000-t);
     // Task-3: 
     // Your code goes here (Use Lab 05 for reference)
     // Check the project document to understand the task

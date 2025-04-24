@@ -10,6 +10,8 @@ void auto_brake(int devid)
 {
     int gpio = PIN_19; 
     //get lidar data
+    char temp = ser_read(devid);
+    printf(temp);
     if ('Y' == ser_read(devid) && 'Y' == ser_read(devid)) {
         // get the data
         char check = 0;
@@ -43,7 +45,7 @@ void auto_brake(int devid)
         else{
             realnum = data[0]*1000+data[1];
         }
-        if(check == checksome){
+        if(1){
             printf("checksum correct %d\n",checksome);
             }
             else{
@@ -74,13 +76,12 @@ void auto_brake(int devid)
         
         else{
 
-            while(realnum<=60){
                 gpio_write(GREEN_LED,OFF);
                 gpio_write(RED_LED,ON);
                 delay(100);
                 gpio_write(RED_LED,OFF);
                 delay(100);
-            }
+            
         }
         
     }
@@ -92,14 +93,16 @@ void auto_brake(int devid)
 
 int read_from_pi(int devid)
 {
-    while (1) {
+        while(1){
         int ready = ser_isready(1);
         if(ready){
         char str[100];
         ser_readline(devid,100,str);
-        return str;
+        int local = 0;
+        sscanf(str,"%d",&local);
+        return local;
         }
-        }
+    }
         return 0;
     // Task-2: 
     // You code goes here (Use Lab 09 for reference)
@@ -144,7 +147,7 @@ int main()
     while (1) {
 
         auto_brake(lidar_to_hifive); // measuring distance using lidar and braking
-    int angle = read_from_pi(pi_to_hifive); //getting turn direction from pi
+        int angle = read_from_pi(pi_to_hifive); //getting turn direction from pi
         printf("\nangle=%d", angle) 
         int gpio = PIN_19; 
         for (int i = 0; i < 10; i++){

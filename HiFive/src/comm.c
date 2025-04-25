@@ -148,8 +148,10 @@ int main()
 
         auto_brake(lidar_to_hifive); // measuring distance using lidar and braking
         int angle = read_from_pi(pi_to_hifive); //getting turn direction from pi
-        printf("\nangle=%d", angle) 
+        printf("\nangle=%d", angle);
         int gpio = PIN_19; 
+        
+        
         for (int i = 0; i < 10; i++){
             // Here, we set the angle to 180 if the prediction from the DNN is a positive angle
             // and 0 if the prediction is a negative angle.

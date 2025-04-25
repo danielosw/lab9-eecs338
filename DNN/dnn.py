@@ -92,7 +92,7 @@ while(1):
                   
                   #Your code here. (use ser2)
                    
-                  ser2.write((str(deg)+"\x00").encode("utf-8"))
+                  ser2.write((str(deg)+"\n").encode("utf-8"))
 
 
 

@@ -93,7 +93,6 @@ void auto_brake(int devid)
 
 int read_from_pi(int devid)
 {
-        while(1){
         int ready = ser_isready(1);
         if(ready){
         char str[100];
@@ -101,7 +100,7 @@ int read_from_pi(int devid)
         int local = 0;
         sscanf(str,"%d",&local);
         return local;
-        }
+        
     }
         return 0;
     // Task-2: 
